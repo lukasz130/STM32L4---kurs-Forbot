@@ -106,7 +106,9 @@ int main(void)
         led = 0;
       }
       led_set(led, true);
+      HAL_Delay(10);
       while (is_button_pressed(0)) {}
+      HAL_Delay(10);
     }
 
     if (is_button_pressed(1))
@@ -118,7 +120,9 @@ int main(void)
         led = 7;
       }
       led_set(led, true);
+      HAL_Delay(20);
       while (is_button_pressed(1)) {}
+      HAL_Delay(20);
     }
 
     /* USER CODE END WHILE */
