@@ -56,6 +56,7 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN 0 */
 
 void led_set(int led, bool turn_on);
+bool is_button_pressed();
 
 /* USER CODE END 0 */
 
@@ -95,12 +96,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    for (int i = 0; i < 8; i++)
+    if (is_button_pressed())
     {
-      led_set(i, true);
-      HAL_Delay(100);
-      led_set(i, false);
-      HAL_Delay(100);
+      led_set(0, true);
+    }
+    else
+    {
+      led_set(0, false);
     }
 
     /* USER CODE END WHILE */
@@ -171,6 +173,18 @@ void led_set(int led, bool turn_on)
   GPIO_PinState state = (turn_on) ? GPIO_PIN_SET : GPIO_PIN_RESET;
 
   HAL_GPIO_WritePin(LED[led].port, LED[led].pin, state);
+}
+
+bool is_button_pressed()
+{
+  if (HAL_GPIO_ReadPin(USER_BUTTON_GPIO_Port, USER_BUTTON_Pin) == GPIO_PIN_SET)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 /* USER CODE END 4 */
