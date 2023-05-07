@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,6 +54,8 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+void led_set(int led, bool turn_on);
 
 /* USER CODE END 0 */
 
@@ -95,9 +97,9 @@ int main(void)
   {
     for (int i = 0; i < 8; i++)
     {
-      HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin << i, GPIO_PIN_SET);
+      led_set(i, true);
       HAL_Delay(100);
-      HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin << i, GPIO_PIN_RESET);
+      led_set(i, false);
       HAL_Delay(100);
     }
 
@@ -147,6 +149,25 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void led_set(int led, bool turn_on)
+{
+  GPIO_PinState state;
+
+  if (turn_on)
+  {
+    state = GPIO_PIN_SET;
+  }
+  else
+  {
+    state = GPIO_PIN_RESET;
+  }
+
+  if (led >= 0 && led < 8)
+  {
+    HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin << led, state);
+  }
+}
 
 /* USER CODE END 4 */
 
