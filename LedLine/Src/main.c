@@ -89,7 +89,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-
+  int led = 0;
+  led_set(led, true);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -98,11 +99,14 @@ int main(void)
   {
     if (is_button_pressed())
     {
-      led_set(0, true);
-    }
-    else
-    {
-      led_set(0, false);
+      led_set(led, false);
+      led++;
+      if (led >= 8)
+      {
+        led = 0;
+      }
+      led_set(led, true);
+      while (is_button_pressed()) {}
     }
 
     /* USER CODE END WHILE */
