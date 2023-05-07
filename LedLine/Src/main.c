@@ -56,7 +56,7 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN 0 */
 
 void led_set(int led, bool turn_on);
-bool is_button_pressed();
+bool is_button_pressed(int button);
 
 /* USER CODE END 0 */
 
@@ -97,7 +97,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if (is_button_pressed())
+    if (is_button_pressed(0))
     {
       led_set(led, false);
       led++;
@@ -106,7 +106,19 @@ int main(void)
         led = 0;
       }
       led_set(led, true);
-      while (is_button_pressed()) {}
+      while (is_button_pressed(0)) {}
+    }
+
+    if (is_button_pressed(1))
+    {
+      led_set(led, false);
+      led--;
+      if (led < 0)
+      {
+        led = 7;
+      }
+      led_set(led, true);
+      while (is_button_pressed(1)) {}
     }
 
     /* USER CODE END WHILE */
@@ -179,14 +191,32 @@ void led_set(int led, bool turn_on)
   HAL_GPIO_WritePin(LED[led].port, LED[led].pin, state);
 }
 
-bool is_button_pressed()
+bool is_button_pressed(int button)
 {
-  if (HAL_GPIO_ReadPin(USER_BUTTON_GPIO_Port, USER_BUTTON_Pin) == GPIO_PIN_SET)
+  switch (button)
   {
-    return true;
-  }
-  else
-  {
+  case 0:
+    if (HAL_GPIO_ReadPin(USER_BUTTON_GPIO_Port, USER_BUTTON_Pin) == GPIO_PIN_SET)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+    break;
+  case 1:
+    // Hardware reversed logic on this button
+    if (HAL_GPIO_ReadPin(USER_BUTTON2_GPIO_Port, USER_BUTTON2_Pin) == GPIO_PIN_RESET)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+    break;
+  default:
     return false;
   }
 }
