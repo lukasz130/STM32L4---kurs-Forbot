@@ -125,6 +125,15 @@ int main(void)
       HAL_Delay(20);
     }
 
+    if (is_button_pressed(2))
+    {
+      led_set(led, false);
+      led = 0;
+      led_set(led, true);
+      HAL_Delay(20);
+      while (is_button_pressed(2)) {}
+      HAL_Delay(20);
+    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -212,6 +221,16 @@ bool is_button_pressed(int button)
   case 1:
     // Hardware reversed logic on this button
     if (HAL_GPIO_ReadPin(USER_BUTTON2_GPIO_Port, USER_BUTTON2_Pin) == GPIO_PIN_RESET)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+    break;
+  case 2:
+    if (HAL_GPIO_ReadPin(USER_BUTTON3_GPIO_Port, USER_BUTTON3_Pin) == GPIO_PIN_RESET)
     {
       return true;
     }
